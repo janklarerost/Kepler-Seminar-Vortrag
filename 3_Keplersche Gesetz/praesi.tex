@@ -3,7 +3,7 @@
 \usepackage[ngerman]{babel}
 \usepackage{amsmath, amssymb}
 \usepackage{tikz}
-\usetikzlibrary{angles} 
+\usetikzlibrary{angles,calc} 
 \usepackage{pgfpages}
 
 % --- NOTIZEN-EINSTELLUNGEN ---
@@ -23,7 +23,7 @@
 % --- Slide 1: Titel ---
 \begin{frame}
     \titlepage
-    
+
     \note{
         Herzlich willkommen zu unserer Präsentation.\\
         Im Rahmen dieses Seminars über komplexe Zahlen möchten wir Ihnen heute zeigen, wie mächtig komplexe Integration sein kann. \\
@@ -35,35 +35,31 @@
 \begin{frame}{1. Keplersches Gesetz}
     \textbf{Planeten bewegen sich auf elliptischen Bahnen. Die Sonne steht in einem der beiden Brennpunkte.}
     \vspace{0.1cm}
-    
+
     \begin{center}
-    \begin{tikzpicture}[scale=0.9]
-        % Koordinaten definieren
-        \coordinate (Sonne) at (1,0);
-        \coordinate (Perihel) at (2.5,0); % Hilfspunkt für den Winkel
-        \coordinate (Planet) at (50:2cm and 1.2cm);
-        
-        % Achsen/Hilfslinien
-        \draw[dashed, gray] (-2.5,0) -- (2.5,0);
-        
-        % Ellipse
-        \draw[thick] (0,0) ellipse (2cm and 1.2cm);
+        \begin{tikzpicture}[scale=0.9]
+            % Ellipse
+            \draw[thick] (0,0) ellipse (2.5cm and 1.5cm);
+            \draw[dashed, gray] (-3.2,0) -- (3.2,0);
+
+            % Koordinaten
+        \coordinate (Sonne) at (1.8,0);
+        \coordinate (Planet) at (50:2.5cm and 1.5cm);
+        \coordinate (Ref) at (3.5,0); % NEU: Unsichtbarer Hilfspunkt auf der Achse
         
         % Brennpunkte
-        \filldraw[orange] (Sonne) circle (3pt) node[below=2pt] {Sonne};
-        \filldraw[black] (-1,0) circle (1pt) node[below=2pt] {$F_2$};
+        \filldraw[orange] (Sonne) circle (3pt) node[below=3pt, black] {Sonne};
+        \filldraw[black] (-1.8,0) circle (1pt) node[below=2pt] {$F_2$};
         
-        % Planet
+        % Planet & Radius
         \filldraw[blue] (Planet) circle (2pt) node[above right] {Planet};
+        \draw[thick, ->] (Sonne) -- (Planet) node[midway, left=2pt] {$r$};
         
-        % Radius vector
-        \draw[thick, ->] (Sonne) -- (Planet) node[midway, above left] {$r$};
-        
-    
-       \pic[draw, thick, ->, angle eccentricity=1.5, angle radius=0.6cm, pic text={$\vartheta$}] {angle = Perihel--Sonne--Planet};
+        % WINKELBOGEN
+        \pic[draw, thick, ->, angle radius=0.6cm, angle eccentricity=1.4, pic text={$\vartheta$}] {angle = Ref--Sonne--Planet};
     \end{tikzpicture}
     \end{center}
-    
+
     \vspace{0.1cm}
     Zur Beschreibung nutzen wir Polarkoordinaten:
     \begin{itemize}
@@ -71,7 +67,7 @@
         \item $\vartheta$: Polarwinkel
         \item $\varepsilon$: Numerische Exzentrizität (für Ellipsen: $0 < \varepsilon < 1$)
     \end{itemize}
-    
+
     \note{
         Starten wir mit einer ganz kurzen Wiederholung der Grundlagen. Das 1. Keplersche Gesetz besagt, dass Planeten sich auf elliptischen Bahnen bewegen, wobei die Sonne in einem der Brennpunkte steht.\\
         Für unsere Berechnungen reicht es, wenn wir uns auf Polarkoordinaten beschränken: Wir schauen uns den Radius $r$ (den Abstand zur Sonne) und den Winkel $\vartheta$ an. Die 'Ovalheit' der Bahn wird durch die numerische Exzentrizität $\varepsilon$ beschrieben. Mehr Geometrie brauchen wir heute gar nicht.
@@ -81,51 +77,89 @@
 % --- Slide 3: 2. Keplersches Gesetz ---
 \begin{frame}{2. Keplersches Gesetz (Flächensatz)}
     Der Fahrstrahl (Sonne $\rightarrow$ Planet) überstreicht in gleichen Zeiten gleich große Flächen.
-    \vspace{0.7cm}
-    
-    Physikalisch bedeutet dies die \textbf{Drehimpulserhaltung}. Für uns relevant ist nur die Aussage zur Winkelgeschwindigkeit $\dot{\vartheta}$:
-    
-    \begin{block}{Zusammenhang Winkelgeschwindigkeit und Radius}
-        \centering
-        \Large
-        $L = r \cdot v \cdot m = r^2 \cdot \dot{\vartheta} \cdot m = \operatorname{const}$
-    \end{block}
-    
-    \vspace{0.5cm}
-    \begin{itemize}
-        \item $L$: Drehimpuls
-        \item $m$: Masse des Planeten
-        \item $\dot{\vartheta} = \frac{d\vartheta}{dt}$: Winkelgeschwindigkeit
-    \end{itemize}
-    \textit{Fazit: Die Winkelgeschwindigkeit hängt direkt vom aktuellen Radius ab!}
-    
+    \vspace{0.4cm}
+
+    \begin{columns}
+        \column{0.55\textwidth}
+        Physikalisch bedeutet dies die \textbf{Drehimpulserhaltung}. Für uns relevant ist die Winkelgeschwindigkeit $\dot{\vartheta}$:
+
+        \begin{block}{Zusammenhang $\dot{\vartheta}$ und $r$}
+            \centering
+            \Large
+            $L = r \cdot v \cdot m = r^2 \cdot \dot{\vartheta} \cdot m = \operatorname{const}$
+        \end{block}
+
+        \vspace{0.2cm}
+        \begin{itemize}
+            \item $L$: Drehimpuls
+            \item $m$: Planetenmasse
+            \item $\dot{\vartheta}$: Winkelgeschwindigkeit
+        \end{itemize}
+        \textit{Fazit: $\dot{\vartheta}$ hängt direkt vom aktuellen Radius ab!}
+
+        \column{0.45\textwidth}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.85]
+                % Rechte Fläche (Sonnennah)
+                \fill[blue!15] (2,0) -- (45:2.5 and 1.5) arc (45:-45:2.5 and 1.5) -- cycle;
+                % Linke Fläche (Sonnenfern)
+                \fill[blue!15] (2,0) -- (145:2.5 and 1.5) arc (145:215:2.5 and 1.5) -- cycle;
+
+                % Ellipse (Jetzt passend zu Folie 2)
+                \draw[thick] (0,0) ellipse (2.5cm and 1.5cm);
+
+                % Linien A1 & A2
+                \draw (2,0) -- (45:2.5 and 1.5);
+                \draw (2,0) -- (-45:2.5 and 1.5);
+                \node at (2.3, 0) {$A_1$};
+
+                \draw (2,0) -- (145:2.5 and 1.5);
+                \draw (2,0) -- (215:2.5 and 1.5);
+                \node at (-0.2, 0) {$A_2$};
+
+                % Sonne (Sonne sitzt nun bei x=2 wie auf Folie 2)
+                \filldraw[orange] (2,0) circle (3pt) node[below=4pt, black] {Sonne};
+
+                % Planeten
+                \filldraw[blue] (45:2.5 and 1.5) circle (2pt);
+                \filldraw[blue] (145:2.5 and 1.5) circle (2pt);
+
+                % Geschwindigkeitsvektoren
+                \draw[->, thick, red] (45:2.5 and 1.5) -- ++(-0.6, 0.8) node[right] {$\vec{v}$};
+                \draw[->, thick, red] (145:2.5 and 1.5) -- ++(-0.3, -0.3) node[left] {$\vec{v}$};
+
+                \node[below, font=\footnotesize] at (0,-1.7) {Wenn $\Delta t_1 = \Delta t_2$, gilt $A_1 = A_2$};
+            \end{tikzpicture}
+        \end{center}
+    \end{columns}
+
     \note{
         Das 2. Keplersche Gesetz ist der berühmte Flächensatz. Physikalisch steckt dahinter die Erhaltung des Drehimpulses $L$.\\
-        Wir haben Ihnen hier die wesentliche Formel mitgebracht. Da der Drehimpuls konstant ist, sehen wir sofort unseren wichtigsten physikalischen Zusammenhang für heute: Die Winkelgeschwindigkeit $\dot{\vartheta}$ hängt direkt vom aktuellen Radius ab. Ist der Planet nah an der Sonne, ist $r$ klein, also muss die Winkelgeschwindigkeit groß sein.
+        Wir haben Ihnen hier die wesentliche Formel mitgebracht. Da der Drehimpuls konstant ist, sehen wir sofort unseren wichtigsten physikalischen Zusammenhang für heute: Die Winkelgeschwindigkeit hängt direkt vom aktuellen Radius ab.\\
+        Die Grafik rechts zeigt das deutlich: Ist der Planet nah an der Sonne (bei $A_1$), ist $r$ klein, also muss die Geschwindigkeit groß sein, damit die gleiche Fläche überstrichen wird wie hinten bei $A_2$.
     }
 \end{frame}
-
 % --- Slide 4: 3. Keplersches Gesetz (Kreisbahnen) ---
 \begin{frame}{3. Keplersches Gesetz für Kreisbahnen}
     Das 3. Gesetz vergleicht verschiedene Planeten miteinander. \\
     \textbf{Spezialfall:} Wir nehmen eine perfekte Kreisbahn an ($r = a = \operatorname{const}$).
-    
+
     \vspace{0.3cm}
     Kräftegleichgewicht (Gravitation $F_G$ = Zentripetalkraft $F_Z$):
     \begin{align*}
-        G \frac{m \cdot M}{r^2} &= m \frac{v^2}{r} \quad\quad \text{mit } v = \frac{2\pi r}{T} \\[1em]
-        G \frac{M}{r^2} &= \frac{4\pi^2 r}{T^2}
+        G \frac{m \cdot M}{r^2} & = m \frac{v^2}{r} \quad\quad \text{mit } v = \frac{2\pi r}{T} \\[1em]
+        G \frac{M}{r^2}         & = \frac{4\pi^2 r}{T^2}
     \end{align*}
-    
+
     \begin{block}{Ergebnis für Kreisbahnen}
         \centering
         \Large
         $\frac{T^2}{r^3} = \frac{4\pi^2}{GM} = \operatorname{const}$
     \end{block}
-    
+
     \vspace{0.2cm}
     \textit{Erkenntnis: Es kommt nicht auf die Masse $m$ an, sondern nur auf die Geometrie und $M$.}
-    
+
     \note{
         Kommen wir zum 3. Keplerschen Gesetz. Dieses ist besonders spannend, weil es *verschiedene* Planeten miteinander vergleicht. Wir betrachten zuerst den einfachsten Spezialfall: Eine perfekte Kreisbahn.\\
         Hier herrscht ein simples Kräftegleichgewicht: Gravitationskraft gleich Zentripetalkraft. Wenn wir das nach der Umlaufzeit $T$ und dem Radius $r$ umformen, erhalten wir das berühmte Gesetz: $T^2 / r^3$ ist konstant.\\
@@ -137,20 +171,20 @@
 \begin{frame}{Gilt das auch für elliptische Bahnen?}
     Kreisbahnen sind ein Idealfall. Was passiert bei starken Abweichungen?
     \vspace{0.4cm}
-    
+
     \textbf{Beispiel Mars:} (Stärkste Exzentrizität der inneren Planeten, $\varepsilon \approx 0.093$)
     \begin{itemize}
         \item Erde: $a \approx 149,6 \cdot 10^6 \text{ km}$, $T = 1 \text{ Jahr}$
         \item Mars: $a \approx 227,9 \cdot 10^6 \text{ km}$, $T = 1.881 \text{ Jahre}$
     \end{itemize}
-    
+
     \begin{align*}
-        \dfrac{T_{\text{Erde}}^2}{a_{\text{Erde}}^3} &\approx 0.283 \cdot 10^{-24} \, \dfrac{\text{Jahre}^2}{\text{km}^3} \\[1em]
-        \dfrac{T_{\text{Mars}}^2}{a_{\text{Mars}}^3} &\approx 0.283 \cdot 10^{-24} \, \dfrac{\text{Jahre}^2}{\text{km}^3}
+        \dfrac{T_{\text{Erde}}^2}{a_{\text{Erde}}^3} & \approx 0.283 \cdot 10^{-24} \, \dfrac{\text{Jahre}^2}{\text{km}^3} \\[1em]
+        \dfrac{T_{\text{Mars}}^2}{a_{\text{Mars}}^3} & \approx 0.283 \cdot 10^{-24} \, \dfrac{\text{Jahre}^2}{\text{km}^3}
     \end{align*}
-    
+
     \textbf{Es stimmt!} Wir suchen nun eine mathematische Erklärung für elliptische Bahnen.
-    
+
     \note{
         Aber Moment... Planeten fliegen nicht auf perfekten Kreisen. Gilt dieses Gesetz auch für stark elliptische Bahnen? \\
         Schauen wir uns den Mars an, der eine sehr exzentrische Bahn hat. Vergleichen wir die Erde und den Mars und setzen ihre echten Daten in den Bruch ein, kommen wir bei beiden exakt auf den gleichen Wert.\\
@@ -160,22 +194,22 @@
 
 % --- Slide 6: Berechnung der Umlaufzeit (T-Integral) ---
 \begin{frame}{Berechnung der Umlaufzeit}
-    Aus dem 2. Gesetz kennen wir: 
+    Aus dem 2. Gesetz kennen wir:
     \[ L = m \cdot r^2 \cdot \frac{d\vartheta}{dt} \quad\Leftrightarrow\quad dt = \frac{m}{L} r^2 \, d\vartheta \]
-    
+
     Integration über eine volle Periode (Winkel von $0$ bis $2\pi$):
     \[ T = \frac{m}{L} \int_0^{2\pi} r(\vartheta)^2 \, d\vartheta \]
-    
+
     Mit der Parametrisierungsformel für Ellipsen $\displaystyle r(\vartheta) = \frac{p}{1 + \varepsilon \cos(\vartheta)}$:
-    
+
     \begin{block}{Das T-Integral}
         \Large
         \[ T = \frac{m \cdot p^2}{L} \int_0^{2\pi} \frac{1}{(1 + \varepsilon \cos(\vartheta))^2} \, d\vartheta \]
     \end{block}
-    
+
     \vspace{0.2cm}
     \textbf{Problem:} Dieses Integral lässt sich nicht in geschlossener Form auswerten. Es ist eine schöne, aber bisher nutzlose Formel!
-    
+
     \note{
         Um das zu beweisen, müssen wir die exakte Umlaufzeit $T$ einer Ellipse berechnen. Wir nehmen das 2. Gesetz von vorhin, lösen nach $dt$ auf und integrieren über eine volle Runde – also von $0$ bis $2\pi$.\\
         Wenn wir für den Radius $r$ die klassische Ellipsengleichung einsetzen, landen wir bei diesem Integral.\\
@@ -185,19 +219,19 @@
 
 % --- Slide 7: Die wichtigste Idee ---
 \begin{frame}{Die wichtigste Idee: Der Weg in die komplexe Ebene}
-    Statt ein reelles Integral über $\vartheta$ zu berechnen, gehen wir in die komplexe Ebene. 
+    Statt ein reelles Integral über $\vartheta$ zu berechnen, gehen wir in die komplexe Ebene.
     Wir ersetzen den Cosinus durch einen Ausdruck in $z$ und betrachten als Integrationsweg den ganzen komplexen Einheitskreis $C$ ($|z| = 1$).
-    
+
     \vspace{0.5cm}
-    \textbf{Substitution:} Mittels $z = e^{i\vartheta}$ transformieren wir das Integral. 
+    \textbf{Substitution:} Mittels $z = e^{i\vartheta}$ transformieren wir das Integral.
     Die feinen Details der Umformung überspringen wir. Das Entscheidende ist das Resultat:
     \vspace{0.5cm}
-    
+
     \begin{block}{Das komplexe Wegintegral}
         \Large
         \[ \int_0^{2\pi} \frac{1}{(1 + \varepsilon \cos(\vartheta))^2} \, d\vartheta \quad\Rightarrow\quad \frac{4}{i \varepsilon^2} \oint_C \frac{z}{\left(z^2 + \frac{2}{\varepsilon}z + 1\right)^2} \, dz \]
     \end{block}
-    
+
     \note{
         Und hier beginnt nun die eigentliche Wissenschaft und das Thema unseres Seminars: Wenn der Weg durchs Reelle versperrt ist, weichen wir in die komplexe Ebene aus! \\
         Wir integrieren nicht mehr über den Winkel, sondern betrachten einen geschlossenen Weg in der komplexen Ebene. Unser Weg ist der Einheitskreis.\\
@@ -209,34 +243,34 @@
 \begin{frame}{Analyse der Polstellen}
     Ein Wegintegral wird durch Betrachtung der Polstellen im Inneren der Kurve bestimmt.
     Dazu suchen wir die Nullstellen des Nenners:
-    
+
     \[ z_{\pm} = -\frac{1}{\varepsilon} \pm \sqrt{\frac{1}{\varepsilon^2} - 1} \]
-    
+
     \textbf{Die exakte Formel ist hier zweitrangig.} Wir brauchen nur \textit{eine} Information: Welche Polstelle liegt innerhalb und welche außerhalb unserer Kurve $C$?
-    
+
     \begin{columns}
         \column{0.5\textwidth}
         \begin{itemize}
             \item $z_-$ liegt \textbf{außerhalb} ($|z_-| > 1$)
             \item $z_+$ liegt \textbf{innerhalb} ($|z_+| < 1$)
         \end{itemize}
-        
+
         \column{0.5\textwidth}
         \begin{center}
-        \begin{tikzpicture}[scale=1.1]
-            % Achsen
-            \draw[->] (-3,0) -- (1.5,0) node[right] {Re};
-            \draw[->] (0,-1.5) -- (0,1.5) node[above] {Im};
-            % Einheitskreis
-            \draw[thick, blue] (0,0) circle (1cm);
-            \node[blue, above right] at (0.7,0.7) {$C$};
-            % Polstellen
-            \filldraw[red] (-0.4,0) circle (2pt) node[above] {$z_+$};
-            \filldraw[red] (-2.5,0) circle (2pt) node[above] {$z_-$};
-        \end{tikzpicture}
+            \begin{tikzpicture}[scale=1.1]
+                % Achsen
+                \draw[->] (-3,0) -- (1.5,0) node[right] {Re};
+                \draw[->] (0,-1.5) -- (0,1.5) node[above] {Im};
+                % Einheitskreis
+                \draw[thick, blue] (0,0) circle (1cm);
+                \node[blue, above right] at (0.7,0.7) {$C$};
+                % Polstellen
+                \filldraw[red] (-0.4,0) circle (2pt) node[above] {$z_+$};
+                \filldraw[red] (-2.5,0) circle (2pt) node[above] {$z_-$};
+            \end{tikzpicture}
         \end{center}
     \end{columns}
-    
+
     \note{
         Wie löst man so ein Wegintegral? Richtig, man muss schauen, wo der Nenner null wird – wir suchen die Polstellen. Setzen wir den Nenner null, liefert uns die Mitternachtsformel zwei Nullstellen.\\
         Die genaue Formel dafür sieht hässlich aus, aber sie ist zweitrangig! Was uns *wirklich* interessiert, ist die Topologie: Welche Polstelle liegt in unserem Kreis und welche draußen? \\
@@ -248,18 +282,18 @@
 \begin{frame}{Anwendung des Cauchy-Integralsatzes}
     Der verallgemeinerte Cauchy-Integralsatz für Ableitungen lautet:
     \[ f^{(n)}(z_0) = \frac{n!}{2\pi i} \oint_C \frac{f(z)}{(z - z_0)^{n+1}} \, dz \]
-    
+
     Da nur $z_+$ im Inneren liegt, müssen wir den Integranden passend umschreiben:
-    
+
     \[ \oint_C \frac{z}{(z - z_+)^2 (z - z_-)^2} \, dz = \oint_C \frac{ \color{blue}{ \dfrac{z}{(z - z_-)^2} } }{ \color{red}{(z - z_+)^2} } \, dz \]
-    
+
     \vspace{0.3cm}
     Das gesuchte Integral lässt sich also mit einer Ableitung von $f(z)$ berechnen. Hierfür ist es fundamental wichtig, $f(z)$ korrekt zu definieren:
     \begin{block}{}
         \Large
         \[ \color{blue}{f(z) = \frac{z}{(z - z_-)^2}} \]
     \end{block}
-    
+
     \note{
         Da wir einen Pol 2. Ordnung haben, nutzen wir den Cauchy-Integralsatz für Ableitungen. \\
         Die Kunst liegt nun darin, unseren Integranden korrekt aufzuteilen. Der rote Teil ist unsere Singularität im Kreis. Alles andere fassen wir in einer analytischen Funktion $f(z)$ zusammen. \\
@@ -271,16 +305,16 @@
 \begin{frame}{Auswertung der Ableitung}
     Nach dem Cauchy-Integralsatz gilt nun: $\displaystyle \oint_C \frac{f(z)}{(z - z_+)^2} \, dz = 2\pi i \cdot f'(z_+)$
     \vspace{0.3cm}
-    
+
     Nach etwas Fleißarbeit (Quotientenregel) oder per Computeralgebra erhält man:
     \[ f'(z_+) = \frac{\varepsilon^2}{4(1-\varepsilon^2)^{\frac{3}{2}}} \]
-    
+
     Eingesetzt in das ursprüngliche $T$-Integral (inklusive Vorfaktor):
-    
+
     \begin{align*}
-        \int_0^{2\pi} \frac{1}{(1 + \varepsilon \cos(\vartheta))^2} \, d\vartheta &= \frac{4}{i \varepsilon^2} \cdot 2\pi i \cdot \frac{\varepsilon^2}{4(1-\varepsilon^2)^{\frac{3}{2}}} = \frac{2\pi}{(1-\varepsilon^2)^{\frac{3}{2}}}
+        \int_0^{2\pi} \frac{1}{(1 + \varepsilon \cos(\vartheta))^2} \, d\vartheta & = \frac{4}{i \varepsilon^2} \cdot 2\pi i \cdot \frac{\varepsilon^2}{4(1-\varepsilon^2)^{\frac{3}{2}}} = \frac{2\pi}{(1-\varepsilon^2)^{\frac{3}{2}}}
     \end{align*}
-    
+
     \note{
         Der Cauchy-Integralsatz sagt uns nun: Der Wert des Integrals ist einfach $2\pi i$ mal die erste Ableitung unserer Funktion $f$ an der Stelle $z_+$. \\
         Das Ableiten von $f(z)$ ist reine Fleißarbeit mit der Quotientenregel – das kann auch ein Computeralgebra-System für uns erledigen. Das Ergebnis ist dieser Bruch.\\
@@ -292,14 +326,14 @@
 \begin{frame}{Auflösung: Das 3. Keplersche Gesetz}
     Wir setzen das gelöste Integral in die Gleichung für $T$ ein:
     \[ T = \frac{m \cdot p^2}{L} \cdot \frac{2\pi}{(1-\varepsilon^2)^{\frac{3}{2}}} \quad\quad \text{mit } p = a(1-\varepsilon^2) \text{ und } L = m \sqrt{GMp} \]
-    
+
     Setzt man $L$ und $p$ konsequent ein, vereinfacht sich der Ausdruck:
     \begin{align*}
-        T &= \frac{2\pi \cdot p^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-\varepsilon^2)^{\frac{3}{2}}} 
-           = \frac{2\pi \cdot a^{\frac{3}{2}} \cdot (1-\varepsilon^2)^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-\varepsilon^2)^{\frac{3}{2}}} 
-           = \frac{2\pi \cdot a^{\frac{3}{2}}}{\sqrt{GM}}
+        T & = \frac{2\pi \cdot p^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-\varepsilon^2)^{\frac{3}{2}}}
+        = \frac{2\pi \cdot a^{\frac{3}{2}} \cdot (1-\varepsilon^2)^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-\varepsilon^2)^{\frac{3}{2}}}
+        = \frac{2\pi \cdot a^{\frac{3}{2}}}{\sqrt{GM}}
     \end{align*}
-    
+
     Quadrieren liefert das endgültige Resultat:
     \begin{block}{Das 3. Keplersche Gesetz}
         \centering
@@ -308,7 +342,7 @@
         $\dfrac{T^2}{a^3} = \dfrac{4\pi^2}{GM} = \operatorname{const}$
         \vspace{0.2cm}
     \end{block}
-    
+
     \note{
         Jetzt bringen wir alles zusammen. Wir nehmen das gelöste Integral und setzen es ganz oben in unsere Gleichung für die Umlaufzeit $T$ ein.\\
         Jetzt müssen wir nur noch unsere physikalischen Variablen in ihre Bestandteile zerlegen. Wenn wir das tun, kürzt sich fast der gesamte Bruchschlag weg.\\
