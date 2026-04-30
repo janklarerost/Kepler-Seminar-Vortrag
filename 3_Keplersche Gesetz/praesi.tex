@@ -46,7 +46,7 @@
             % Koordinaten
         \coordinate (Sonne) at (1.8,0);
         \coordinate (Planet) at (50:2.5cm and 1.5cm);
-        \coordinate (Ref) at (3.5,0); % NEU: Unsichtbarer Hilfspunkt auf der Achse
+        \coordinate (Ref) at (3.5,0);
         
         % Brennpunkte
         \filldraw[orange] (Sonne) circle (3pt) node[below=3pt, black] {Sonne};
@@ -77,26 +77,32 @@
 
 % --- Slide 3: 2. Keplersches Gesetz ---
 \begin{frame}{2. Keplersches Gesetz (Flächensatz)}
-    Der Fahrstrahl (Sonne $\rightarrow$ Planet) überstreicht in gleichen Zeiten gleich große Flächen.
-    \vspace{0.4cm}
+    Der Fahrstrahl (Sonne $\rightarrow$ Planet) überstreicht in gleichen Zeiten gleich grosse Flächen.
+    \vspace{0.3cm} % Etwas weniger Platz hier oben
 
     \begin{columns}
-        \column{0.55\textwidth}
-        Physikalisch bedeutet dies die \textbf{Drehimpulserhaltung}. Für uns relevant ist die Winkelgeschwindigkeit $\dot{\vartheta}$:
+       \column{0.55\textwidth}
+        Dies entspricht physikalisch der \textbf{Drehimpulserhaltung}:
 
         \begin{block}{Zusammenhang $\dot{\vartheta}$ und $r$}
-            \centering
-            \Large
-            $L = r \cdot v \cdot m = r^2 \cdot \dot{\vartheta} \cdot m = \operatorname{const}$
+            \centering \large
+            \vspace{0.1cm}
+            $L = m \cdot r \cdot v_{\perp} = m \cdot r^2 \cdot \dot{\vartheta} = \operatorname{const}$
+            \vspace{0.1cm}
         \end{block}
 
-        \vspace{0.2cm}
         \begin{itemize}
-            \item $L$: Drehimpuls
-            \item $m$: Planetenmasse
+            \item $L, m$: Drehimpuls \& Masse \textit{(konstant)}
+            \item $v_{\perp} = r \cdot \dot{\vartheta}$: Tangentialgeschwindigkeit
             \item $\dot{\vartheta}$: Winkelgeschwindigkeit
         \end{itemize}
-        \textit{Fazit: $\dot{\vartheta}$ hängt direkt vom aktuellen Radius ab!}
+        
+        \vspace{0.2cm}
+        \textbf{Fazit:} Umgestellt auf $\dot{\vartheta}$ ergibt sich:
+        \vspace{-0.2cm}
+        \begin{equation*}
+            \dot{\vartheta} = \frac{L}{m \cdot r^2}
+        \end{equation*}
 
         \column{0.45\textwidth}
         \begin{center}
@@ -106,7 +112,7 @@
                 % Linke Fläche (Sonnenfern)
                 \fill[blue!15] (2,0) -- (145:2.5 and 1.5) arc (145:215:2.5 and 1.5) -- cycle;
 
-                % Ellipse (Jetzt passend zu Folie 2)
+                % Ellipse
                 \draw[thick] (0,0) ellipse (2.5cm and 1.5cm);
 
                 % Linien A1 & A2
@@ -118,7 +124,7 @@
                 \draw (2,0) -- (215:2.5 and 1.5);
                 \node at (-0.2, 0) {$A_2$};
 
-                % Sonne (Sonne sitzt nun bei x=2 wie auf Folie 2)
+                % Sonne
                 \filldraw[orange] (2,0) circle (3pt) node[below=4pt, black] {Sonne};
 
                 % Planeten
@@ -171,7 +177,7 @@
 
 % --- Slide 5: Gilt das auch für Ellipsen? ---
 \begin{frame}{Gilt das auch für elliptische Bahnen?}
-    Kreisbahnen sind ein Idealfall. Was passiert bei starken Abweichungen?
+    Kreisbahnen sind ein Idealfall. Was passiert bei Abweichungen?
     \vspace{0.4cm}
 
     \textbf{Beispiel Mars:} (Stärkste Exzentrizität der inneren Planeten, $\varepsilon \approx 0.093$)
