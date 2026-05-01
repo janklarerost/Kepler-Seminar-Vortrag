@@ -25,7 +25,6 @@
     \titlepage
 
     \note{
-        Hallo Jan \\
         Herzlich willkommen zu unserer Präsentation.\\
         Im Rahmen dieses Seminars über komplexe Zahlen möchten wir Ihnen heute zeigen, wie mächtig komplexe Integration sein kann. \\
         Wir wenden sie auf ein klassisches physikalisches Problem an: Den Beweis des 3. Keplerschen Gesetzes für elliptische Planetenbahnen.
@@ -66,12 +65,12 @@
     \begin{itemize}
         \item $r$: Abstand zur Sonne
         \item $\vartheta$: Polarwinkel
-        \item $\varepsilon$: Numerische Exzentrizität (für Ellipsen: $0 < \varepsilon < 1$)
+        \item $e$: Numerische Exzentrizität (für Ellipsen: $0 < e < 1$)
     \end{itemize}
 
     \note{
         Starten wir mit einer ganz kurzen Wiederholung der Grundlagen. Das 1. Keplersche Gesetz besagt, dass Planeten sich auf elliptischen Bahnen bewegen, wobei die Sonne in einem der Brennpunkte steht.\\
-        Für unsere Berechnungen reicht es, wenn wir uns auf Polarkoordinaten beschränken: Wir schauen uns den Radius $r$ (den Abstand zur Sonne) und den Winkel $\vartheta$ an. Die 'Ovalheit' der Bahn wird durch die numerische Exzentrizität $\varepsilon$ beschrieben. Mehr Geometrie brauchen wir heute gar nicht.
+        Für unsere Berechnungen reicht es, wenn wir uns auf Polarkoordinaten beschränken: Wir schauen uns den Radius $r$ (den Abstand zur Sonne) und den Winkel $\vartheta$ an. Die 'Ovalheit' der Bahn wird durch die numerische Exzentrizität $e$ beschrieben. Mehr Geometrie brauchen wir heute gar nicht.
     }
 \end{frame}
 
@@ -174,7 +173,7 @@
     Kreisbahnen sind ein Idealfall. Was passiert bei starken Abweichungen?
     \vspace{0.4cm}
 
-    \textbf{Beispiel Mars:} (Stärkste Exzentrizität der inneren Planeten, $\varepsilon \approx 0.093$)
+    \textbf{Beispiel Mars:} (Stärkste Exzentrizität der inneren Planeten, $e \approx 0.093$)
     \begin{itemize}
         \item Erde: $a \approx 149,6 \cdot 10^6 \text{ km}$, $T = 1 \text{ Jahr}$
         \item Mars: $a \approx 227,9 \cdot 10^6 \text{ km}$, $T = 1.881 \text{ Jahre}$
@@ -202,11 +201,11 @@
     Integration über eine volle Periode (Winkel von $0$ bis $2\pi$):
     \[ T = \frac{m}{L} \int_0^{2\pi} r(\vartheta)^2 \, d\vartheta \]
 
-    Mit der Parametrisierungsformel für Ellipsen $\displaystyle r(\vartheta) = \frac{p}{1 + \varepsilon \cos(\vartheta)}$:
+    Mit der Parametrisierungsformel für Ellipsen $\displaystyle r(\vartheta) = \frac{p}{1 + e \cos(\vartheta)}$:
 
     \begin{block}{Das T-Integral}
         \Large
-        \[ T = \frac{m \cdot p^2}{L} \int_0^{2\pi} \frac{1}{(1 + \varepsilon \cos(\vartheta))^2} \, d\vartheta \]
+        \[ T = \frac{m \cdot p^2}{L} \int_0^{2\pi} \frac{1}{(1 + e \cos(\vartheta))^2} \, d\vartheta \]
     \end{block}
 
     \vspace{0.2cm}
@@ -231,7 +230,7 @@
 
     \begin{block}{Das komplexe Wegintegral}
         \Large
-        \[ \int_0^{2\pi} \frac{1}{(1 + \varepsilon \cos(\vartheta))^2} \, d\vartheta \quad\Rightarrow\quad \frac{4}{i \varepsilon^2} \oint_C \frac{z}{\left(z^2 + \frac{2}{\varepsilon}z + 1\right)^2} \, dz \]
+        \[ \int_0^{2\pi} \frac{1}{(1 + e \cos(\vartheta))^2} \, d\vartheta \quad\Rightarrow\quad \frac{4}{i e^2} \oint_C \frac{z}{\left(z^2 + \frac{2}{e}z + 1\right)^2} \, dz \]
     \end{block}
 
     \note{
@@ -246,7 +245,7 @@
     Ein Wegintegral wird durch Betrachtung der Polstellen im Inneren der Kurve bestimmt.
     Dazu suchen wir die Nullstellen des Nenners:
 
-    \[ z_{\pm} = -\frac{1}{\varepsilon} \pm \sqrt{\frac{1}{\varepsilon^2} - 1} \]
+    \[ z_{\pm} = -\frac{1}{e} \pm \sqrt{\frac{1}{e^2} - 1} \]
 
     \textbf{Die exakte Formel ist hier zweitrangig.} Wir brauchen nur \textit{eine} Information: Welche Polstelle liegt innerhalb und welche außerhalb unserer Kurve $C$?
 
@@ -276,7 +275,7 @@
     \note{
         Wie löst man so ein Wegintegral? Richtig, man muss schauen, wo der Nenner null wird – wir suchen die Polstellen. Setzen wir den Nenner null, liefert uns die Mitternachtsformel zwei Nullstellen.\\
         Die genaue Formel dafür sieht hässlich aus, aber sie ist zweitrangig! Was uns *wirklich* interessiert, ist die Topologie: Welche Polstelle liegt in unserem Kreis und welche draußen? \\
-        Da $\varepsilon$ kleiner als 1 ist, liegt $z_-$ weit außerhalb, aber $z_+$ liegt *innerhalb* unseres Einheitskreises. Und nur dieser Punkt liefert einen Beitrag zu unserem Integral.
+        Da $e$ kleiner als 1 ist, liegt $z_-$ weit außerhalb, aber $z_+$ liegt *innerhalb* unseres Einheitskreises. Und nur dieser Punkt liefert einen Beitrag zu unserem Integral.
     }
 \end{frame}
 
@@ -309,12 +308,12 @@
     \vspace{0.3cm}
 
     Nach etwas Fleißarbeit (Quotientenregel) oder per Computeralgebra erhält man:
-    \[ f'(z_+) = \frac{\varepsilon^2}{4(1-\varepsilon^2)^{\frac{3}{2}}} \]
+    \[ f'(z_+) = \frac{e^2}{4(1-e^2)^{\frac{3}{2}}} \]
 
     Eingesetzt in das ursprüngliche $T$-Integral (inklusive Vorfaktor):
 
     \begin{align*}
-        \int_0^{2\pi} \frac{1}{(1 + \varepsilon \cos(\vartheta))^2} \, d\vartheta & = \frac{4}{i \varepsilon^2} \cdot 2\pi i \cdot \frac{\varepsilon^2}{4(1-\varepsilon^2)^{\frac{3}{2}}} = \frac{2\pi}{(1-\varepsilon^2)^{\frac{3}{2}}}
+        \int_0^{2\pi} \frac{1}{(1 + e \cos(\vartheta))^2} \, d\vartheta & = \frac{4}{i e^2} \cdot 2\pi i \cdot \frac{e^2}{4(1-e^2)^{\frac{3}{2}}} = \frac{2\pi}{(1-e^2)^{\frac{3}{2}}}
     \end{align*}
 
     \note{
@@ -327,12 +326,12 @@
 % --- Slide 11: Auflösung ---
 \begin{frame}{Auflösung: Das 3. Keplersche Gesetz}
     Wir setzen das gelöste Integral in die Gleichung für $T$ ein:
-    \[ T = \frac{m \cdot p^2}{L} \cdot \frac{2\pi}{(1-\varepsilon^2)^{\frac{3}{2}}} \quad\quad \text{mit } p = a(1-\varepsilon^2) \text{ und } L = m \sqrt{GMp} \]
+    \[ T = \frac{m \cdot p^2}{L} \cdot \frac{2\pi}{(1-e^2)^{\frac{3}{2}}} \quad\quad \text{mit } p = a(1-e^2) \text{ und } L = m \sqrt{GMp} \]
 
     Setzt man $L$ und $p$ konsequent ein, vereinfacht sich der Ausdruck:
     \begin{align*}
-        T & = \frac{2\pi \cdot p^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-\varepsilon^2)^{\frac{3}{2}}}
-        = \frac{2\pi \cdot a^{\frac{3}{2}} \cdot (1-\varepsilon^2)^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-\varepsilon^2)^{\frac{3}{2}}}
+        T & = \frac{2\pi \cdot p^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-e^2)^{\frac{3}{2}}}
+        = \frac{2\pi \cdot a^{\frac{3}{2}} \cdot (1-e^2)^{\frac{3}{2}}}{\sqrt{GM} \cdot (1-e^2)^{\frac{3}{2}}}
         = \frac{2\pi \cdot a^{\frac{3}{2}}}{\sqrt{GM}}
     \end{align*}
 
