@@ -6,6 +6,9 @@
 \usetikzlibrary{angles,calc} 
 \usepackage{pgfpages}
 
+% Mehrzeiliger Kommentar
+\newcommand{\mycomment}[1]{}
+
 % --- NOTIZEN-EINSTELLUNGEN ---
 \setbeameroption{show notes on second screen=right}
 
@@ -179,23 +182,24 @@
     Kreisbahnen sind ein Idealfall. Was passiert bei Abweichungen?
     \vspace{0.4cm}
 
-    \textbf{Beispiel Mars:} (Stärkste Exzentrizität der inneren Planeten, $e \approx 0.093$)
+    \textbf{Beispiel Komet 67P:} (Starke Exzentrizität, $e \approx 0.641$)
     \begin{itemize}
         \item Erde: $a \approx 149,6 \cdot 10^6 \text{ km}$, $T = 1 \text{ Jahr}$
-        \item Mars: $a \approx 227,9 \cdot 10^6 \text{ km}$, $T = 1.881 \text{ Jahre}$
+        \item 67P: $a \approx 518 \cdot 10^6 \text{ km}$, $T = 6.44 \text{ Jahre}$
     \end{itemize}
 
     \begin{align*}
-        \dfrac{T_{\text{Erde}}^2}{a_{\text{Erde}}^3} & \approx 0.283 \cdot 10^{-24} \, \dfrac{\text{Jahre}^2}{\text{km}^3} \\[1em]
-        \dfrac{T_{\text{Mars}}^2}{a_{\text{Mars}}^3} & \approx 0.283 \cdot 10^{-24} \, \dfrac{\text{Jahre}^2}{\text{km}^3}
+        \dfrac{T_{\text{Erde}}^2}{a_{\text{Erde}}^3} & \approx 0.297 \cdot 10^{-18} \, \dfrac{\text{s}^2}{\text{m}^3} \\[1em]
+        \dfrac{T_{\text{67P}}^2}{a_{\text{67P}}^3} & \approx 0.297 \cdot 10^{-18} \, \dfrac{\text{s}^2}{\text{m}^3}
     \end{align*}
 
     \textbf{Es stimmt!} Wir suchen nun eine mathematische Erklärung für elliptische Bahnen.
 
     \note{
         Aber Moment... Planeten fliegen nicht auf perfekten Kreisen. Gilt dieses Gesetz auch für stark elliptische Bahnen? \\
-        Schauen wir uns den Mars an, der eine sehr exzentrische Bahn hat. Vergleichen wir die Erde und den Mars und setzen ihre echten Daten in den Bruch ein, kommen wir bei beiden exakt auf den gleichen Wert.\\
+        Schauen wir uns den Komet 67P an, der eine sehr exzentrische Bahn hat. Vergleichen wir die Erde und den Komet 67P und setzen ihre echten Daten in den Bruch ein, kommen wir bei beiden exakt auf den gleichen Wert.\\
         Es stimmt also in der Realität! Newton hat später physikalisch gezeigt warum das so ist. Aber wir wollen uns das heute rein mathematisch herleiten. Wir brauchen einen strengen Beweis.
+        Komet 67P: Erster Komet der von Raumsonde begleitet wurde (Rosetta)
     }
 \end{frame}
 
@@ -215,7 +219,7 @@
     \end{block}
 
     \vspace{0.2cm}
-    \textbf{Problem:} Dieses Integral lässt sich nicht in geschlossener Form auswerten. Es ist eine schöne, aber bisher nutzlose Formel!
+    \textbf{Problem:} Dieses Integral lässt sich nicht einfach in geschlossener Form auswerten.
 
     \note{
         Um das zu beweisen, müssen wir die exakte Umlaufzeit $T$ einer Ellipse berechnen. Wir nehmen das 2. Gesetz von vorhin, lösen nach $dt$ auf und integrieren über eine volle Runde – also von $0$ bis $2\pi$.\\
@@ -292,7 +296,7 @@
 
     Da nur $z_+$ im Inneren liegt, müssen wir den Integranden passend umschreiben:
 
-    \[ \oint_C \frac{z}{(z - z_+)^2 (z - z_-)^2} \, dz = \oint_C \frac{ \color{blue}{ \dfrac{z}{(z - z_-)^2} } }{ \color{red}{(z - z_+)^2} } \, dz \]
+    \[ \oint_C \frac{z}{(z - z_+)^2 (z - z_-)^2} \, dz = \oint_C \frac{ \color{blue}{ \dfrac{z}{(z - z_-)^2} } }{ \color{red}{\;(z - z_+)^2\;} } \, dz \]
 
     \vspace{0.3cm}
     Das gesuchte Integral lässt sich also mit einer Ableitung von $f(z)$ berechnen. Hierfür ist es fundamental wichtig, $f(z)$ korrekt zu definieren:
@@ -319,7 +323,7 @@
     Eingesetzt in das ursprüngliche $T$-Integral (inklusive Vorfaktor):
 
     \begin{align*}
-        \int_0^{2\pi} \frac{1}{(1 + e \cos(\vartheta))^2} \, d\vartheta & = \frac{4}{i e^2} \cdot 2\pi i \cdot \frac{e^2}{4(1-e^2)^{\frac{3}{2}}} = \frac{2\pi}{(1-e^2)^{\frac{3}{2}}}
+        \int_0^{2\pi} \frac{1}{(1 + e \cos(\vartheta))^2} \, d\vartheta & = \frac{4}{i e^2} \cdot 2\pi i \cdot \frac{e^2}{4(1-e^2)^{\frac{3}{2}}} = \boxed{\frac{2\pi}{(1-e^2)^{\frac{3}{2}}}}
     \end{align*}
 
     \note{
